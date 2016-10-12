@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">Digital Leash Parent</string>
+    <string name="app_name">Digital Leash</string>
+
+    <string name="username">Username</string>
+    <string name="radius">Radius</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="create">Create</string>
+    <string name="check_status">Check Status</string>
+    <string name="update">Update</string>
+    <string name="username_hint">John Adams</string>
+    <string name="radius_hint">2</string>
 </resources>
