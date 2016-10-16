@@ -8,4 +8,5 @@
     <color name="textColor">#ffffff</color>
     <color name="buttonColor">#4fc382</color>
     <color name="OKBackground">#1883b2</color>
+    <color name="firstBackground">#1883b2</color>
 </resources>

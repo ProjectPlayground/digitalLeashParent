@@ -1,20 +1,20 @@
 package com.geogehigbie.digitalleashparent;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
+import layout.FragmentBadChild;
+import layout.FragmentFirstPage;
+import layout.FragmentGoodChild;
+import layout.FragmentMainLayout;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
 
     private String URLString;
 
+    private RelativeLayout relativeLayout;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
+
+    private boolean isGoodChild;
 
 
     @Override
@@ -40,9 +45,33 @@ public class MainActivity extends AppCompatActivity {
         getChildStatus();
 
 
+
     }
 
-    public void getParentData(){
+
+    public void setUpFragment() {
+
+        relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, new FragmentFirstPage()).commit();
+        fragmentTransaction.replace(R.id.fragment_container, new FragmentMainLayout()).commit();
+        //TODO: after some delay add the main layout
+
+        //fragmentTransaction.replace(R.id.fragment_container, new FragmentMainLayout()).commit();
+    }
+
+    public void loadFraments() {
+        if (isGoodChild) {
+            fragmentTransaction.replace(R.id.fragment_container, new FragmentGoodChild()).commit();
+        }
+
+        fragmentTransaction.replace(R.id.fragment_container, new FragmentBadChild()).commit();
+
+    }
+
+
+    public void getParentData() {
         EditText parentUserID = (EditText) findViewById(R.id.usernameEditText);
         EditText parentRadius = (EditText) findViewById(R.id.radiusEditText);
         EditText parentLongitute = (EditText) findViewById(R.id.longitudeEditText);
@@ -58,21 +87,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void getChildStatus(){
+    public void getChildStatus() {
 
     }
 
 
-    public void createJSON(){
+    public void createJSON() {
         parentJSON = new JSONObject();
 
-        try{
+        try {
             parentJSON.put("userID", userID);
             parentJSON.put("radius", radius);
             parentJSON.put("longitute", longitude);
             parentJSON.put("latitude", latitude);
 
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -84,21 +113,21 @@ public class MainActivity extends AppCompatActivity {
     //makes use of OKHTTP to post
 
 
-    public void HTTPRequestRun(String userID, String URL, String JSON){
+    public void HTTPRequestRun(String userID, String URL, String JSON) {
         this.userID = userID;
 
         URLString = "https://turntotech.firebaseio.com/digitalleash/" + "userID" + ".json.";
         OkHttpClient client = new OkHttpClient();
 
-        String post(String url, String json) throws IOException {
-            RequestBody body = RequestBody.create(JSON, json);
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        }
+//        String post(String url, String json) throws IOException {
+//            RequestBody body = RequestBody.create(JSON, json);
+//            Request request = new Request.Builder()
+//                    .url(url)
+//                    .post(body)
+//                    .build();
+//            Response response = client.newCall(request).execute();
+//            return response.body().string();
+//        }
 
 //        public class PostExample {
 //
@@ -118,33 +147,33 @@ public class MainActivity extends AppCompatActivity {
 //
 //        }
 
-    public void senddatatoserver(View v) {
-
-        URLString = "https://turntotech.firebaseio.com/digitalleash/" + "userID" + ".json.";
-
-        if (parentJSON.length() > 0) {
-            new SendJsonDataToServer().execute(String.valueOf(parentJSON));
-            #call to async class
-        }
-
+//    public void senddatatoserver(View v) {
+//
+//        URLString = "https://turntotech.firebaseio.com/digitalleash/" + "userID" + ".json.";
+//
+//        if (parentJSON.length() > 0) {
+//            new SendJsonDataToServer().execute(String.valueOf(parentJSON));
+//            #call to async class
+//        }
 
 
     }
 // TODO: AsyncTask
 
-    class SendDataToServer extends AsyncTask<String,String,String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-
-        }
-
-
-        @Override
-        protected void onPostExecute(String s) {
-        }
-
-    }
-}
-
+//    class SendDataToServer extends AsyncTask<String,String,String> {
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//
+//        }
+//
+//
+//        @Override
+//        protected void onPostExecute(String s) {
+//        }
+//
+//    }
+//}
+//
+//}
 }
