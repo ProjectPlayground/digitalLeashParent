@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.geogehigbie.digitalleashparent.MainActivity"
-    android:background="@color/backgroundColor">
+    android:background="@drawable/leash_background">
 
             <LinearLayout
                 android:id="@+id/linearUpper"
@@ -169,7 +169,8 @@
                     android:textColor="@color/textColor"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:background="@drawable/button_rounded"
-                    android:layout_marginRight="15dp"/>
+                    android:layout_marginRight="15dp"
+                    android:onClick="onClickCreate"/>
 
                 <Button
                     android:id="@+id/buttonCheck"
@@ -181,7 +182,8 @@
                     android:background="@drawable/button_rounded"
                     android:layout_marginRight="15dp"
                     android:paddingLeft="4dp"
-                    android:paddingRight="4dp"/>
+                    android:paddingRight="4dp"
+                    android:onClick="onClickCheckStatus"/>
 
                 <Button
                     android:id="@+id/buttonUpdate"
@@ -192,7 +194,7 @@
                     android:textColor="@color/textColor"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:background="@drawable/button_rounded"
-                    />
+                    android:onClick="onClickUpdate" />
 
             </LinearLayout>
 

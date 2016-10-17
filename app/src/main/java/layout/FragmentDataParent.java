@@ -13,12 +13,12 @@ import com.geogehigbie.digitalleashparent.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentFirstPage.OnFragmentInteractionListener} interface
+ * {@link FragmentDataParent.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentFirstPage#newInstance} factory method to
+ * Use the {@link FragmentDataParent#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentFirstPage extends Fragment {
+public class FragmentDataParent extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class FragmentFirstPage extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentFirstPage() {
+    public FragmentDataParent() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class FragmentFirstPage extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentFirstPage.
+     * @return A new instance of fragment FragmentDataParent.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentFirstPage newInstance(String param1, String param2) {
-        FragmentFirstPage fragment = new FragmentFirstPage();
+    public static FragmentDataParent newInstance(String param1, String param2) {
+        FragmentDataParent fragment = new FragmentDataParent();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,7 +65,7 @@ public class FragmentFirstPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first_page, container, false);
+        return inflater.inflate(R.layout.fragment_data_parent, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -81,8 +81,8 @@ public class FragmentFirstPage extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            // throw new RuntimeException(context.toString()
+            //      + " must implement OnFragmentInteractionListener");
         }
     }
 

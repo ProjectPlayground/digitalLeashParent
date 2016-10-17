@@ -2,8 +2,9 @@ package com.geogehigbie.digitalleashparent;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -11,12 +12,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import layout.FragmentBadChild;
-import layout.FragmentFirstPage;
+import layout.FragmentDataParent;
 import layout.FragmentGoodChild;
-import layout.FragmentMainLayout;
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
     private String userID;
     private String radius;
@@ -40,36 +40,47 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        loadFirstFragment();
+
+    }
+
+    public void loadFirstFragment(){
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, new FragmentDataParent());
+        fragmentTransaction.commit();
+
+    }
+
+
+    public void onClickCreate(View view){
+
         getParentData();
+
+    }
+
+    public void onClickCheckStatus(View view){
 
         getChildStatus();
 
+        if(isGoodChild){
+            loadGoodChildFragment();
 
+        }
+        else{
+            loadBadChildFragment();
 
-    }
-
-
-    public void setUpFragment() {
-
-        relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, new FragmentFirstPage()).commit();
-        fragmentTransaction.replace(R.id.fragment_container, new FragmentMainLayout()).commit();
-        //TODO: after some delay add the main layout
-
-        //fragmentTransaction.replace(R.id.fragment_container, new FragmentMainLayout()).commit();
-    }
-
-    public void loadFraments() {
-        if (isGoodChild) {
-            fragmentTransaction.replace(R.id.fragment_container, new FragmentGoodChild()).commit();
         }
 
-        fragmentTransaction.replace(R.id.fragment_container, new FragmentBadChild()).commit();
+
 
     }
 
+    public void onClickUpdate(View view){
+
+        getParentData();
+
+    }
 
     public void getParentData() {
         EditText parentUserID = (EditText) findViewById(R.id.usernameEditText);
@@ -87,9 +98,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void getChildStatus() {
+        public void getChildStatus() {
+
+            isGoodChild = false;
 
     }
+
+
+    public void loadBadChildFragment(){
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, new FragmentBadChild());
+        fragmentTransaction.commit();
+
+    }
+
+    public void loadGoodChildFragment(){
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, new FragmentGoodChild());
+        fragmentTransaction.commit();
+
+    }
+
+
+//    public void setUpFragment() {
+//
+//        relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
+//        fragmentManager = getSupportFragmentManager();
+//        fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.add(R.id.fragment_container, new FragmentFirstPage()).commit();
+//        fragmentTransaction.replace(R.id.fragment_container, new FragmentMainLayout()).commit();
+//        //TODO: after some delay add the main layout
+//
+//        //fragmentTransaction.replace(R.id.fragment_container, new FragmentMainLayout()).commit();
+//    }
+
+    public void loadFraments() {
+        if (isGoodChild) {
+            fragmentTransaction.replace(R.id.fragment_container, new FragmentGoodChild()).commit();
+        }
+
+        fragmentTransaction.replace(R.id.fragment_container, new FragmentBadChild()).commit();
+
+    }
+
+
+
+
 
 
     public void createJSON() {
