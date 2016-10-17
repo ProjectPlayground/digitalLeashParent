@@ -1,5 +1,6 @@
 package com.geogehigbie.digitalleashparent;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
@@ -55,12 +56,14 @@ public class MainActivity extends FragmentActivity {
 
     public void onClickCreate(View view){
 
+        playSoundEffects();
         getParentData();
 
     }
 
     public void onClickCheckStatus(View view){
 
+        playSoundEffects();
         getChildStatus();
 
         if(isGoodChild){
@@ -78,7 +81,17 @@ public class MainActivity extends FragmentActivity {
 
     public void onClickUpdate(View view){
 
+        playSoundEffects();
         getParentData();
+
+    }
+
+
+
+    public void playSoundEffects(){
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.click_on_sound);
+        mediaPlayer.start();
 
     }
 

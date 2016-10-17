@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     tools:context="layout.FragmentMainLayout">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:id="@+id/linearUpper"
@@ -189,5 +194,6 @@
             />
 
     </LinearLayout>
+   </RelativeLayout>
 
 </FrameLayout>
