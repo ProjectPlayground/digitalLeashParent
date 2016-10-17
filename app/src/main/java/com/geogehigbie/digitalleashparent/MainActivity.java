@@ -47,7 +47,8 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void loadFirstFragment(){
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, new FragmentDataParent());
         fragmentTransaction.commit();
 
@@ -60,6 +61,7 @@ public class MainActivity extends FragmentActivity {
         getParentData();
 
     }
+
 
     public void onClickCheckStatus(View view){
 
@@ -75,9 +77,8 @@ public class MainActivity extends FragmentActivity {
 
         }
 
-
-
     }
+
 
     public void onClickUpdate(View view){
 
