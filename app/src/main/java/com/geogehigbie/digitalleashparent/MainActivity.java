@@ -2,15 +2,18 @@ package com.geogehigbie.digitalleashparent;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Random;
 
 import layout.FragmentBadChild;
 import layout.FragmentDataParent;
@@ -88,6 +91,32 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    public void messageToast(String string) {
+
+        Toast toast = Toast.makeText(getApplicationContext(), string, Toast.LENGTH_LONG);
+        toast.show();
+
+    }
+
+
+
+    public void onClickBadChild(View view){
+        String warningMessage = "Your kid is playing in traffic! Panic!!!";
+
+        playSoundEffects();
+        messageToast(warningMessage);
+        loadFirstFragment();
+
+    }
+
+    public void onClickGoodChild(View view){
+        String partyMessage = "Your kid is alive. Get Drunk!";
+
+        playSoundEffects();
+        messageToast(partyMessage);
+        loadFirstFragment();
+    }
+
 
     public void playSoundEffects(){
 
@@ -114,7 +143,16 @@ public class MainActivity extends FragmentActivity {
 
         public void getChildStatus() {
 
-            isGoodChild = false;
+            Random random = new Random();
+            int number =  random.nextInt(2);
+
+
+            if(number == 0){
+                isGoodChild = false;
+            }
+            else{
+                isGoodChild = true;
+            }
 
     }
 
@@ -136,17 +174,7 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-//    public void setUpFragment() {
-//
-//        relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
-//        fragmentManager = getSupportFragmentManager();
-//        fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.add(R.id.fragment_container, new FragmentFirstPage()).commit();
-//        fragmentTransaction.replace(R.id.fragment_container, new FragmentMainLayout()).commit();
-//        //TODO: after some delay add the main layout
-//
-//        //fragmentTransaction.replace(R.id.fragment_container, new FragmentMainLayout()).commit();
-//    }
+
 
     public void loadFraments() {
         if (isGoodChild) {
@@ -174,6 +202,11 @@ public class MainActivity extends FragmentActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void HTTPRequestRun(){
+        HTTPClient httpClient = new DefaultHTTPClient();
 
     }
 

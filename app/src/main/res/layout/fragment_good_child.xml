@@ -5,10 +5,28 @@
     android:background="@drawable/good_child"
     tools:context="layout.FragmentGoodChild">
 
-    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/good_child"/>
+        android:src="@drawable/good_child_nobutton"/>
 
+    <Button
+        android:id="@+id/buttonGoodChild"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/woohoo"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="@color/textColor"
+        android:textStyle="italic"
+        android:background="@drawable/button_rounded_orange"
+        android:layout_marginBottom="20dp"
+        android:onClick="onClickBadChild"
+        />
+
+</RelativeLayout>
 </FrameLayout>
