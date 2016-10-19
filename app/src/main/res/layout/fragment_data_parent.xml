@@ -41,6 +41,7 @@
                     android:id="@+id/usernameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/textColor"
                     android:textColorHint="@color/textColor"
                     android:hint="@string/username_hint"
                     android:background="@drawable/edit_text_rounded"
