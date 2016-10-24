@@ -19,12 +19,12 @@ import java.util.Random;
 import layout.FragmentBadChild;
 import layout.FragmentDataParent;
 import layout.FragmentGoodChild;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.geogehigbie.digitalleashparent.Post.JSON;
 
 public class MainActivity extends FragmentActivity {
 
@@ -42,6 +42,7 @@ public class MainActivity extends FragmentActivity {
     private FragmentTransaction fragmentTransaction;
 
     private boolean isGoodChild;
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
 
     @Override
@@ -119,12 +120,14 @@ public class MainActivity extends FragmentActivity {
         String warningMessage;
 
         Random random = new Random();
-        int number = random.nextInt(3);
+        int number = random.nextInt(4);
 
         if (number == 0) {
             warningMessage = "Your kid is playing in traffic and smoking crack! Panic!!!";
         } else if (number == 1) {
             warningMessage = "Your kid is robbing a bank. You failed as a parent! Panic!!!";
+        } else if (number == 2) {
+            warningMessage = "Maybe you should have taken that parenting class...your kids is running wild";
         } else {
             warningMessage = "The cops have your child. You are truly a terrible parent. Panic!!!";
         }
@@ -141,12 +144,14 @@ public class MainActivity extends FragmentActivity {
         String partyMessage;
 
         Random random = new Random();
-        int number = random.nextInt(3);
+        int number = random.nextInt(4);
 
         if (number == 0) {
             partyMessage = "Your kid is alive but has ADHD. Get Drunk!";
         } else if (number == 1) {
             partyMessage = "Your kid is NOT robbing a bank. Get Drunk!";
+        } else if (number == 3) {
+            partyMessage = "Maybe you should have taken that parenting class...you are relying too much on your phone. YOU SUCK!";
         } else {
             partyMessage = "Your kid is NOT smoking crack. Get Drunk!";
         }

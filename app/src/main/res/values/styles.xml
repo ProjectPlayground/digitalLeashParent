@@ -11,7 +11,7 @@
 
 
     <style name="SplashPageTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_image</item>
-    </style>
+    <item name="android:windowBackground">@drawable/splash_image</item>
+</style>
 
 </resources>
