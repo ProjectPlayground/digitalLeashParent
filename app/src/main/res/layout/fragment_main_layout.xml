@@ -180,7 +180,8 @@
             android:background="@drawable/button_rounded"
             android:layout_marginRight="15dp"
             android:paddingLeft="4dp"
-            android:paddingRight="4dp"/>
+            android:paddingRight="4dp"
+            android:onClick="getChildStatus"/>
 
         <Button
             android:id="@+id/buttonUpdate"
