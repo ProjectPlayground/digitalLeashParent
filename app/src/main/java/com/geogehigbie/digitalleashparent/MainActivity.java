@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,8 +26,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 
 public class MainActivity extends FragmentActivity {
@@ -48,6 +45,9 @@ public class MainActivity extends FragmentActivity {
 
     private boolean isGoodChild;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private String childLatitudeString;
+    private String childLongitudeString;
 
 
     @Override
@@ -87,6 +87,7 @@ public class MainActivity extends FragmentActivity {
 
         playSoundEffects();
         getChildStatus();
+
 
         if (isGoodChild) {
             loadGoodChildFragment();
@@ -273,7 +274,7 @@ public class MainActivity extends FragmentActivity {
 
                 Request request = new Request.Builder()
                         .url(URLString)
-                        .addHeader("X-HTTP-Method-Override","PUT")
+                        .addHeader("X-HTTP-Method-Override", "PUT")
                         .post(postdata)
                         .build();
 
@@ -296,7 +297,6 @@ public class MainActivity extends FragmentActivity {
         }
 
 
-
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -314,9 +314,11 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    public void getChildStatus() {
 
-    public void getChildStatus(View view) {
         //get JSON data from server
+
+
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -332,50 +334,55 @@ public class MainActivity extends FragmentActivity {
             String jsonData = responses.body().string();
             JSONObject Jobject = new JSONObject(jsonData);
 
-            JSONArray Jarray = Jobject.getJSONArray("employees");
-
-            for (int i = 0; i < Jarray.length(); i++) {
-                JSONObject object = Jarray.getJSONObject(i);
-            }
+            childLatitudeString = Jobject.getString("child_latitude");
+            childLongitudeString = Jobject.getString("child_longitude");
 
         } catch (Exception e) {
+            e.printStackTrace();
             Log.d("Exception", e.getMessage());
         }
-    }
+
 
         //defines the location
         Location childCurrentLocation = new Location("childCurrentLocation");
         Location childShouldBeLocation = new Location("childShouldBeLocation");
 
         //converts the location from a string to a double
-        double childCurrentLatitude = Double.parseDouble(); //TODO: needs to get data from the server to define the childs current latitude
-        double childCurrentLongitude = Double.parseDouble(); //TODO: needs to get data from the server to define the childs current longitude
+        double childCurrentLatitude = Double.parseDouble(childLatitudeString);
+        double childCurrentLongitude = Double.parseDouble(childLongitudeString);
         double latitudeDoubleShouldBe = Double.parseDouble(latitude);
         double longitudeDoubleShouldBe = Double.parseDouble(longitude);
 
         //sets the latitude and longitude for the current location of the child
+
         childCurrentLocation.setLatitude(childCurrentLatitude);
         childCurrentLocation.setLongitude(childCurrentLongitude);
 
         //sets the latitude and longitude for the location at which the child should be
         childShouldBeLocation.setLatitude(latitudeDoubleShouldBe);
-        childShouldBeLocation.setLongitude(longitudeDoubleShouldBe;
+        childShouldBeLocation.setLongitude(longitudeDoubleShouldBe);
 
 
-        Random random = new Random();
-        int number = random.nextInt(2);
+        String TAGLatitude = "LAT";
+        String TAGLong = "LONG";
 
 
-        if (number == 0) {
-            isGoodChild = false;
-        } else {
-            isGoodChild = true;
-        }
-
+        Log.d(TAGLatitude, childLatitudeString);
+        Log.d(TAGLong, childLongitudeString);
 
 
     }
+
+//randome method no longer needed
+//        Random random = new Random();
+//        int number = random.nextInt(2);
+//
+//
+//        if (number == 0) {
+//            isGoodChild = false;
+//        } else {
+//            isGoodChild = true;
+//        }
+
 }
-
-
 
