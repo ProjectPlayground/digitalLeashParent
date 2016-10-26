@@ -319,6 +319,7 @@ public class MainActivity extends FragmentActivity {
         //get JSON data from server
 
 
+
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -373,16 +374,86 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-//randome method no longer needed
-//        Random random = new Random();
-//        int number = random.nextInt(2);
-//
-//
-//        if (number == 0) {
-//            isGoodChild = false;
-//        } else {
-//            isGoodChild = true;
-//        }
+    public class GetJSONData() extends AsyncTask<Void, Void, String>{
+
+        String JSONString = createJSON();
+        String URLString = createURL(userIDParent);
+
+        @Override
+        protected String doInBackground (Void...params){
+
+
+        try {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(URLString)
+                    .build();
+            Response responses = null;
+
+            try {
+                responses = client.newCall(request).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String jsonData = responses.body().string();
+            JSONObject Jobject = new JSONObject(jsonData);
+
+            childLatitudeString = Jobject.getString("child_latitude");
+            childLongitudeString = Jobject.getString("child_longitude");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("Exception", e.getMessage());
+        }
+
+            defineChildPosition();
+    }
+    }
+
+
+    public void defineChildPosition(){
+        //defines the location
+        Location childCurrentLocation = new Location("childCurrentLocation");
+        Location childShouldBeLocation = new Location("childShouldBeLocation");
+
+        //converts the location from a string to a double
+        double childCurrentLatitude = Double.parseDouble(childLatitudeString);
+        double childCurrentLongitude = Double.parseDouble(childLongitudeString);
+        double latitudeDoubleShouldBe = Double.parseDouble(latitude);
+        double longitudeDoubleShouldBe = Double.parseDouble(longitude);
+
+        //sets the latitude and longitude for the current location of the child
+
+        childCurrentLocation.setLatitude(childCurrentLatitude);
+        childCurrentLocation.setLongitude(childCurrentLongitude);
+
+        //sets the latitude and longitude for the location at which the child should be
+        childShouldBeLocation.setLatitude(latitudeDoubleShouldBe);
+        childShouldBeLocation.setLongitude(longitudeDoubleShouldBe);
+
+
+        String TAGLatitude = "LAT";
+        String TAGLong = "LONG";
+
+
+        Log.d(TAGLatitude, childLatitudeString);
+        Log.d(TAGLong, childLongitudeString);
+
+
+        float distance = childShouldBeLocation.distanceTo(childCurrentLocation);
+        float radiusFloat = Float.parseFloat(radius);
+
+
+        if(distance > radiusFloat){
+            isGoodChild = true;
+        }
+        else{
+            isGoodChild = false;
+        }
+
+    }
+
+
 
 }
 
