@@ -1,5 +1,6 @@
 package com.geogehigbie.digitalleashparent;
 
+import android.location.Location;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Random;
+import java.util.function.ToDoubleBiFunction;
 
 import layout.FragmentBadChild;
 import layout.FragmentDataParent;
@@ -204,6 +206,27 @@ public class MainActivity extends FragmentActivity {
 
 
     public void getChildStatus() {
+        //defines the location
+        Location childCurrentLocation = new Location("childCurrentLocation");
+        Location childShouldBeLocation = new Location("childShouldBeLocation");
+
+        //converts the location from a string to a double
+        double childCurrentLatitude = Double.parseDouble(); //TODO: needs to get data from the server to define the childs current latitude
+        double childCurrentLongitude = Double.parseDouble(); //TODO: needs to get data from the server to define the childs current longitude
+        double latitudeDoubleShouldBe = Double.parseDouble(latitude);
+        double longitudeDoubleShouldBe = Double.parseDouble(longitude);
+
+        //sets the latitude and longitude for the current location of the child
+        childCurrentLocation.setLatitude(childCurrentLatitude);
+        childCurrentLocation.setLongitude(childCurrentLongitude);
+
+        //sets the latitude and longitude for the location at which the child should be
+        childShouldBeLocation.setLatitude(latitudeDoubleShouldBe);
+        childShouldBeLocation.setLongitude(longitudeDoubleShouldBe;
+
+
+
+
 
         Random random = new Random();
         int number = random.nextInt(2);
@@ -214,6 +237,8 @@ public class MainActivity extends FragmentActivity {
         } else {
             isGoodChild = true;
         }
+
+
 
     }
 
