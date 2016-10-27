@@ -21,6 +21,8 @@ import java.util.Random;
 import layout.FragmentBadChild;
 import layout.FragmentDataParent;
 import layout.FragmentGoodChild;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -319,7 +321,6 @@ public class MainActivity extends FragmentActivity {
         //get JSON data from server
 
 
-
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -327,16 +328,39 @@ public class MainActivity extends FragmentActivity {
                     .build();
             Response responses = null;
 
-            try {
-                responses = client.newCall(request).execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             String jsonData = responses.body().string();
             JSONObject Jobject = new JSONObject(jsonData);
 
             childLatitudeString = Jobject.getString("child_latitude");
             childLongitudeString = Jobject.getString("child_longitude");
+
+            try {
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        Log.d("Response", "ok2");
+                    }
+                });
+
+                responses = client.newCall(request).execute();
+
+                Log.d("Response", "ok1");
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//            String jsonData = responses.body().string();
+//            JSONObject Jobject = new JSONObject(jsonData);
+//
+//            childLatitudeString = Jobject.getString("child_latitude");
+//            childLongitudeString = Jobject.getString("child_longitude");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -370,45 +394,49 @@ public class MainActivity extends FragmentActivity {
 
         Log.d(TAGLatitude, childLatitudeString);
         Log.d(TAGLong, childLongitudeString);
-
-
     }
 
-    public class GetJSONData() extends AsyncTask<Void, Void, String>{
+
+
+    public class GetJSONData extends AsyncTask<Void, Void, String> {
 
         String JSONString = createJSON();
         String URLString = createURL(userIDParent);
 
         @Override
-        protected String doInBackground (Void...params){
+        protected String doInBackground(Void... params) {
 
-
-        try {
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(URLString)
-                    .build();
-            Response responses = null;
 
             try {
-                responses = client.newCall(request).execute();
-            } catch (IOException e) {
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder()
+                        .url(URLString)
+                        .build();
+                Response responses = null;
+
+                try {
+                    responses = client.newCall(request).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String jsonData = responses.body().string();
+                JSONObject Jobject = new JSONObject(jsonData);
+
+                childLatitudeString = Jobject.getString("child_latitude");
+                childLongitudeString = Jobject.getString("child_longitude");
+
+            } catch (Exception e) {
                 e.printStackTrace();
+                Log.d("Exception", e.getMessage());
             }
-            String jsonData = responses.body().string();
-            JSONObject Jobject = new JSONObject(jsonData);
-
-            childLatitudeString = Jobject.getString("child_latitude");
-            childLongitudeString = Jobject.getString("child_longitude");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d("Exception", e.getMessage());
-        }
 
             defineChildPosition();
+            return null;
+
+        }
     }
-    }
+
+
 
 
     public void defineChildPosition(){
