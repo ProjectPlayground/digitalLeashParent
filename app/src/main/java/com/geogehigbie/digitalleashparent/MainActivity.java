@@ -21,8 +21,6 @@ import java.util.Random;
 import layout.FragmentBadChild;
 import layout.FragmentDataParent;
 import layout.FragmentGoodChild;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -91,15 +89,15 @@ public class MainActivity extends FragmentActivity {
         getChildStatus();
 
 
-        if (isGoodChild) {
-            loadGoodChildFragment();
-
-        } else {
-            loadBadChildFragment();
-
-        }
-
-        setTextViews();
+//        if (isGoodChild) {
+//            loadGoodChildFragment();
+//
+//        } else {
+//            loadBadChildFragment();
+//
+//        }
+//
+//        setTextViews();
 
     }
 
@@ -318,83 +316,87 @@ public class MainActivity extends FragmentActivity {
 
     public void getChildStatus() {
 
+        GetJSONData getJSONData = new GetJSONData();
+        getJSONData.execute();
+    }
+
         //get JSON data from server
 
-
-        try {
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(URLString)
-                    .build();
-            Response responses = null;
-
-            String jsonData = responses.body().string();
-            JSONObject Jobject = new JSONObject(jsonData);
-
-            childLatitudeString = Jobject.getString("child_latitude");
-            childLongitudeString = Jobject.getString("child_longitude");
-
-            try {
-
-                client.newCall(request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        Log.d("Response", "ok2");
-                    }
-                });
-
-                responses = client.newCall(request).execute();
-
-                Log.d("Response", "ok1");
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//    public void getChildStatus2(){
+//
+//        try {
+//            OkHttpClient client = new OkHttpClient();
+//            Request request = new Request.Builder()
+//                    .url(URLString)
+//                    .build();
+//            Response responses = null;
+//
+////            String jsonData = responses.body().string();
+////            JSONObject Jobject = new JSONObject(jsonData);
+////
+////            childLatitudeString = Jobject.getString("child_latitude");
+////            childLongitudeString = Jobject.getString("child_longitude");
+//
+//            try {
+//
+//                client.newCall(request).enqueue(new Callback() {
+//                    @Override
+//                    public void onFailure(Call call, IOException e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onResponse(Call call, Response response) throws IOException {
+//                        Log.d("Response", "ok2");
+//                    }
+//                });
+//
+//                responses = client.newCall(request).execute();
+//
+//                Log.d("Response", "ok1");
+//
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 //            String jsonData = responses.body().string();
 //            JSONObject Jobject = new JSONObject(jsonData);
 //
 //            childLatitudeString = Jobject.getString("child_latitude");
 //            childLongitudeString = Jobject.getString("child_longitude");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d("Exception", e.getMessage());
-        }
-
-
-        //defines the location
-        Location childCurrentLocation = new Location("childCurrentLocation");
-        Location childShouldBeLocation = new Location("childShouldBeLocation");
-
-        //converts the location from a string to a double
-        double childCurrentLatitude = Double.parseDouble(childLatitudeString);
-        double childCurrentLongitude = Double.parseDouble(childLongitudeString);
-        double latitudeDoubleShouldBe = Double.parseDouble(latitude);
-        double longitudeDoubleShouldBe = Double.parseDouble(longitude);
-
-        //sets the latitude and longitude for the current location of the child
-
-        childCurrentLocation.setLatitude(childCurrentLatitude);
-        childCurrentLocation.setLongitude(childCurrentLongitude);
-
-        //sets the latitude and longitude for the location at which the child should be
-        childShouldBeLocation.setLatitude(latitudeDoubleShouldBe);
-        childShouldBeLocation.setLongitude(longitudeDoubleShouldBe);
-
-
-        String TAGLatitude = "LAT";
-        String TAGLong = "LONG";
-
-
-        Log.d(TAGLatitude, childLatitudeString);
-        Log.d(TAGLong, childLongitudeString);
-    }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Log.d("Exception", e.getMessage());
+//        }
+//
+//        //defines the location
+//        Location childCurrentLocation = new Location("childCurrentLocation");
+//        Location childShouldBeLocation = new Location("childShouldBeLocation");
+//
+//        //converts the location from a string to a double
+//        double childCurrentLatitude = Double.parseDouble(childLatitudeString);
+//        double childCurrentLongitude = Double.parseDouble(childLongitudeString);
+//        double latitudeDoubleShouldBe = Double.parseDouble(latitude);
+//        double longitudeDoubleShouldBe = Double.parseDouble(longitude);
+//
+//        //sets the latitude and longitude for the current location of the child
+//
+//        childCurrentLocation.setLatitude(childCurrentLatitude);
+//        childCurrentLocation.setLongitude(childCurrentLongitude);
+//
+//        //sets the latitude and longitude for the location at which the child should be
+//        childShouldBeLocation.setLatitude(latitudeDoubleShouldBe);
+//        childShouldBeLocation.setLongitude(longitudeDoubleShouldBe);
+//
+//
+//        String TAGLatitude = "LAT";
+//        String TAGLong = "LONG";
+//
+//
+//        Log.d(TAGLatitude, childLatitudeString);
+//        Log.d(TAGLong, childLongitudeString);
+//    }
 
 
 
@@ -420,19 +422,30 @@ public class MainActivity extends FragmentActivity {
                     e.printStackTrace();
                 }
                 String jsonData = responses.body().string();
-                JSONObject Jobject = new JSONObject(jsonData);
+                return jsonData;
 
-                childLatitudeString = Jobject.getString("child_latitude");
-                childLongitudeString = Jobject.getString("child_longitude");
 
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d("Exception", e.getMessage());
             }
 
-            defineChildPosition();
             return null;
 
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            try {
+                JSONObject jobject = new JSONObject(s);
+                childLatitudeString = jobject.getString("child_latitude");
+                childLongitudeString = jobject.getString("child_longitude");
+                defineChildPosition();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -473,11 +486,23 @@ public class MainActivity extends FragmentActivity {
 
 
         if(distance > radiusFloat){
-            isGoodChild = true;
-        }
-        else{
             isGoodChild = false;
         }
+        else{
+            isGoodChild = true;
+        }
+
+
+        if (isGoodChild) {
+            loadGoodChildFragment();
+
+        } else {
+            loadBadChildFragment();
+
+        }
+
+        setTextViews();
+
 
     }
 
