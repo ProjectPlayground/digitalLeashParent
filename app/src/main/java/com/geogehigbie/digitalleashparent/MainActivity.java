@@ -1,7 +1,10 @@
 package com.geogehigbie.digitalleashparent;
 
+import android.content.Context;
 import android.location.Location;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -86,11 +89,12 @@ public class MainActivity extends FragmentActivity {
 
 
     public void onClickCheckStatus(View view) {
+        isNetworkAvailable();
 
         playSoundEffects();
         getChildStatus();
 
-
+//this is used for demo purposes only - uncomment when a demonstration is needed and comment out the three lines above
 //        if (isGoodChild) {
 //            loadGoodChildFragment();
 //
@@ -98,8 +102,8 @@ public class MainActivity extends FragmentActivity {
 //            loadBadChildFragment();
 //
 //        }
-//
-//        setTextViews();
+
+        setTextViews();
 
     }
 
@@ -204,6 +208,9 @@ public class MainActivity extends FragmentActivity {
 
 
     public void getParentData() {
+
+        isNetworkAvailable();
+
         EditText parentUserID = (EditText) findViewById(R.id.usernameEditText);
         EditText parentRadius = (EditText) findViewById(R.id.radiusEditText);
         EditText parentLongitude = (EditText) findViewById(R.id.longitudeEditText);
@@ -217,6 +224,25 @@ public class MainActivity extends FragmentActivity {
         createJSON();
 
     }
+
+    private void isNetworkAvailable() {
+
+        String messageToast = "Internet is not available";
+
+        Toast toast2 = Toast.makeText(getApplicationContext(), messageToast, Toast.LENGTH_LONG);
+
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (activeNetworkInfo == null) {
+            toast2.show();
+
+        }
+    }
+
+
+
 
     public void setTextViews() {
         EditText parentUserID = (EditText) findViewById(R.id.usernameEditText);
@@ -357,84 +383,6 @@ public class MainActivity extends FragmentActivity {
         getJSONData.execute();
     }
 
-        //get JSON data from server
-
-//    public void getChildStatus2(){
-//
-//        try {
-//            OkHttpClient client = new OkHttpClient();
-//            Request request = new Request.Builder()
-//                    .url(URLString)
-//                    .build();
-//            Response responses = null;
-//
-////            String jsonData = responses.body().string();
-////            JSONObject Jobject = new JSONObject(jsonData);
-////
-////            childLatitudeString = Jobject.getString("child_latitude");
-////            childLongitudeString = Jobject.getString("child_longitude");
-//
-//            try {
-//
-//                client.newCall(request).enqueue(new Callback() {
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException {
-//                        Log.d("Response", "ok2");
-//                    }
-//                });
-//
-//                responses = client.newCall(request).execute();
-//
-//                Log.d("Response", "ok1");
-//
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            String jsonData = responses.body().string();
-//            JSONObject Jobject = new JSONObject(jsonData);
-//
-//            childLatitudeString = Jobject.getString("child_latitude");
-//            childLongitudeString = Jobject.getString("child_longitude");
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Log.d("Exception", e.getMessage());
-//        }
-//
-//        //defines the location
-//        Location childCurrentLocation = new Location("childCurrentLocation");
-//        Location childShouldBeLocation = new Location("childShouldBeLocation");
-//
-//        //converts the location from a string to a double
-//        double childCurrentLatitude = Double.parseDouble(childLatitudeString);
-//        double childCurrentLongitude = Double.parseDouble(childLongitudeString);
-//        double latitudeDoubleShouldBe = Double.parseDouble(latitude);
-//        double longitudeDoubleShouldBe = Double.parseDouble(longitude);
-//
-//        //sets the latitude and longitude for the current location of the child
-//
-//        childCurrentLocation.setLatitude(childCurrentLatitude);
-//        childCurrentLocation.setLongitude(childCurrentLongitude);
-//
-//        //sets the latitude and longitude for the location at which the child should be
-//        childShouldBeLocation.setLatitude(latitudeDoubleShouldBe);
-//        childShouldBeLocation.setLongitude(longitudeDoubleShouldBe);
-//
-//
-//        String TAGLatitude = "LAT";
-//        String TAGLong = "LONG";
-//
-//
-//        Log.d(TAGLatitude, childLatitudeString);
-//        Log.d(TAGLong, childLongitudeString);
-//    }
-
 
 
     public class GetJSONData extends AsyncTask<Void, Void, String> {
@@ -480,8 +428,9 @@ public class MainActivity extends FragmentActivity {
                 childLongitudeString = jobject.getString("child_longitude");
                 defineChildPosition();
             }
-            catch(Exception e){
+            catch(JSONException e){
                 e.printStackTrace();
+                loadUnknownChildFragment();
             }
         }
     }
@@ -500,10 +449,8 @@ public class MainActivity extends FragmentActivity {
         double latitudeDoubleShouldBe = Double.parseDouble(latitude);
         double longitudeDoubleShouldBe = Double.parseDouble(longitude);
 
-       // int childLatInt = Integer.parseInt(childLatitudeString);
-       // int childLongInt = Integer.parseInt(childLongitudeString);
-
-        if(childLatitudeString.isEmpty() || childLongitudeString.isEmpty()){
+        if(childLatitudeString.isEmpty()){
+            Log.d("mm", "tasty");
             loadUnknownChildFragment();
         }
 
