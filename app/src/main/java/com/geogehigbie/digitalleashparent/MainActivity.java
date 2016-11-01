@@ -21,6 +21,7 @@ import java.util.Random;
 import layout.FragmentBadChild;
 import layout.FragmentDataParent;
 import layout.FragmentGoodChild;
+import layout.FragmentNoIdea;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -44,6 +45,7 @@ public class MainActivity extends FragmentActivity {
     private FragmentTransaction fragmentTransaction;
 
     private boolean isGoodChild;
+    private boolean isUnknownChild = false;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private String childLatitudeString;
@@ -168,6 +170,31 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    public void onClickUnknownChild(View view) {
+
+        String partyMessage;
+
+        Random random = new Random();
+        int number = random.nextInt(4);
+
+        if (number == 0) {
+            partyMessage = "Good God! You don't even know where your kid is!!!";
+        } else if (number == 1) {
+            partyMessage = "It's ten o'clock. Do you know where your kid is?";
+        } else if (number == 3) {
+            partyMessage = "Maybe you should have taken that parenting class...you are relying too much on your phone. YOU SUCK!";
+        } else {
+            partyMessage = "Your kid is probably smoking crack right now. You suck as a parent";
+        }
+
+
+        playSoundEffects();
+        messageToast(partyMessage);
+        // loadFirstFragment();
+        getSupportFragmentManager().popBackStack();
+    }
+
+
     public void playSoundEffects() {
 
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.click_on_sound);
@@ -212,7 +239,8 @@ public class MainActivity extends FragmentActivity {
     public void loadBadChildFragment() {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, new FragmentBadChild()).addToBackStack(null);//.commit();
+        fragmentTransaction.add(R.id.fragment_container, new FragmentBadChild());
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }
@@ -222,7 +250,16 @@ public class MainActivity extends FragmentActivity {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, new FragmentGoodChild());
-        fragmentTransaction.addToBackStack(null);//.commit();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+    }
+
+    public void loadUnknownChildFragment() {
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, new FragmentNoIdea());
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }
@@ -463,8 +500,14 @@ public class MainActivity extends FragmentActivity {
         double latitudeDoubleShouldBe = Double.parseDouble(latitude);
         double longitudeDoubleShouldBe = Double.parseDouble(longitude);
 
-        //sets the latitude and longitude for the current location of the child
+       // int childLatInt = Integer.parseInt(childLatitudeString);
+       // int childLongInt = Integer.parseInt(childLongitudeString);
 
+        if(childLatitudeString.isEmpty() || childLongitudeString.isEmpty()){
+            loadUnknownChildFragment();
+        }
+
+        //sets the latitude and longitude for the current location of the child
         childCurrentLocation.setLatitude(childCurrentLatitude);
         childCurrentLocation.setLongitude(childCurrentLongitude);
 
@@ -488,18 +531,27 @@ public class MainActivity extends FragmentActivity {
         if(distance > radiusFloat){
             isGoodChild = false;
         }
-        else{
+        else if(distance <= radiusFloat){
             isGoodChild = true;
         }
+        else{
+            isUnknownChild = true;
+        }
 
 
-        if (isGoodChild) {
-            loadGoodChildFragment();
-
-        } else {
-            loadBadChildFragment();
+        if(isUnknownChild){
+            loadUnknownChildFragment();
 
         }
+        else{
+            if (isGoodChild) {
+                loadGoodChildFragment();
+            }
+            else{
+                loadBadChildFragment();
+            }
+        }
+
 
         setTextViews();
 

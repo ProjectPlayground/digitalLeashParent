@@ -1,0 +1,63 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bad_child_background"
+    tools:context="layout.FragmentNoIdea">
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/unknown_child" />
+
+          <TextView
+              android:id="@+id/dummy"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_centerInParent="true"/>
+
+          <TextView
+              android:id="@+id/unknown1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/unknown1"
+              android:textColor="@color/textColor"
+              android:textAppearance="?android:textAppearanceLarge"
+              android:textStyle="bold"
+              android:layout_centerHorizontal="true"
+              android:layout_below="@+id/dummy"
+              android:paddingTop="60dp"/>
+
+          <TextView
+              android:id="@+id/unknown2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/unknown2"
+              android:textColor="@color/textColor"
+              android:textAppearance="?android:textAppearanceLarge"
+              android:textStyle="bold"
+              android:layout_centerHorizontal="true"
+              android:layout_below="@+id/unknown1"/>
+
+        <Button
+            android:id="@+id/buttonBadChild"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="@string/uhoh"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="italic"
+            android:background="@drawable/button_rounded_gray"
+            android:layout_marginBottom="20dp"
+            android:onClick="onClickUnknownChild"
+            />
+
+    </RelativeLayout>
+
+</FrameLayout>
